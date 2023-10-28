@@ -1,0 +1,153 @@
+struct Node
+{
+    int idata;
+    struct Node * next ;
+};
+
+struct Node* createNode(int data)
+{
+    struct Node* newnode = (struct Node*) malloc(sizeof(struct Node));
+    if (newnode == NULL) {
+        printf("Memory allocation failed.\n");
+        exit(1);
+    }
+    newnode -> idata = data;
+    newnode -> next = NULL;
+    return newnode;
+}
+
+struct Node * insertAtbegining( struct Node* head, int data)
+{
+    struct Node* newnode = createNode(data);
+    newnode -> next  = head;
+    return newnode;
+}
+
+void display(struct Node* head)
+{
+    while (head != NULL)
+    {
+        printf("%d-->", head->idata);
+        head = head ->next;
+    }
+    printf("NULL\n");
+    
+}
+
+struct Node * insertATend(struct Node* head , int data)
+{
+    struct Node * newnode = createNode(data);
+    if (head == NULL)  
+    {
+        head = newnode;
+    }  
+    else 
+    {
+        struct Node* current  = head;
+        while (current-> next != NULL)
+        {
+            current = current->next;
+        }
+        current->next = newnode;
+        
+    }
+    return head;
+}
+
+int isEmpty(struct Node* head)
+{
+    if (head == NULL)
+    {
+        return 1;
+    }
+    else 
+    {
+        return 0;
+    }
+}
+
+int getLength(struct Node* head)
+{
+    struct Node* current = head;
+    int icount = 0;
+    if (isEmpty(current))
+    {
+        return 0;
+    }
+    while (current != NULL)
+    {
+        icount = icount + 1;
+        current = current->next;
+    }
+    return icount;
+}
+
+int isSearch(struct Node* head, int key)
+{
+    struct Node* current = head;
+    if(isEmpty(current))
+    {
+        return 0;
+    }
+    while (current != NULL)
+    {
+        if (current->idata == key)
+        {
+            return 1;
+        }
+        current = current->next;
+    }
+    return 0;
+    
+}
+
+
+struct Node* insertAtpos(struct Node* head, int pos, int key)
+{
+    struct Node* current = head;
+    struct Node* newNode = createNode(key);
+    if (pos <= 0)
+    {
+        printf("Invalid position.\n");
+        return head;
+    }
+
+    if (pos == 1)
+    {
+        newNode->next = head; 
+        return newNode;
+    }
+    int i=1;
+    while (i<(pos-1) && current != NULL)
+    {
+        current = current->next;
+        i++;
+    }
+    
+    if (current == NULL)
+    {
+        printf("position  is beyond the end of the list that why this node is inserted at last position \n");
+        head = insertATend(head,key);
+    }
+    else
+    {
+        current->next = newNode;
+        newNode->next = current->next;
+    }
+    return head;
+}
+
+struct Node* reverseLinkedList(struct Node* head) {
+    struct Node* prev = NULL;
+    struct Node* current = head;
+    struct Node* next;
+
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    head = prev;
+    return head;
+}
